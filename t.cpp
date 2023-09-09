@@ -129,8 +129,43 @@ int main ()
     //------------------------------------------------------------------------
 
     GLint posAttrib = glGetAttribLocation (shaderProgram, "position");
+
+    glVertexAttribPointer
+    (
+        posAttrib,
+        2,          // Number of the values
+        GL_FLOAT,
+        GL_FALSE,   // Whether the parameters should be normalized
+                    // between 0.0 and 1.0
+                    
+        0,          // Stride - number of bytes in between
+        0           // Offset from the beginning of the array
+    );
     
-    
+    glEnableVertexAttribArray (posAttrib);
+        
+    //------------------------------------------------------------------------
+
+    while (! glfwWindowShouldClose (window))
+    {
+        glDrawArrays
+        (
+            GL_TRIANGLES,
+            0,  // How many vertices to skip
+            3
+        );
+
+        glfwSwapBuffers (window);
+        glfwPollEvents  ();
+        
+        if (glfwGetKey (window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose (window, GL_TRUE);
+    }
+
+    glfwTerminate ();
+
+    //------------------------------------------------------------------------
+
     return 0;
 }
      
