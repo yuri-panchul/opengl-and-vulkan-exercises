@@ -7,7 +7,7 @@ d=$(mktemp -d)
 pwd="$PWD"
 cd "$d"
 
-gcc "$pwd/t.cpp" -lGLEW -lglfw
+g++ "$pwd/t.cpp" -lGLEW -lglfw
 
 ./a.out
 rm -rf "$d"
