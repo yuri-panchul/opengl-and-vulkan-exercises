@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <ctime>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -21,11 +22,13 @@ const char * vertexSource = R"glsl(
 const char * fragmentSource = R"glsl(
     #version 150 core
 
+    uniform vec3 triangleColor;
+
     out vec4 outColor;
 
     void main ()
     {
-        outColor = vec4 (1.0, 1.0, 1.0, 1.0);
+        outColor = vec4 (triangleColor, 1.0);
     }
 )glsl";
 
@@ -146,8 +149,15 @@ int main ()
         
     //------------------------------------------------------------------------
 
+    GLint uniColor = glGetUniformLocation (shaderProgram, "triangleColor");
+    glUniform3f (uniColor, 1.0f, 0.0f, 0.0f);
+
+    //------------------------------------------------------------------------
+
     while (! glfwWindowShouldClose (window))
     {
+        glUniform3f (uniColor, clock () / 100 % 100 / 100.0f, 0.0f, 0.0f);
+        
         glDrawArrays
         (
             GL_TRIANGLES,
