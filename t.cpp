@@ -5,7 +5,7 @@
 
 //----------------------------------------------------------------------------
 
-const char * vertexSource = R"(
+const char * vertexSource = R"glsl(
     #version 150 core
 
     in vec2 position;
@@ -14,11 +14,11 @@ const char * vertexSource = R"(
     {
         gl_Position = vec4 (position, 0.0, 1.0);
     }
-)";
+)glsl";
 
 //----------------------------------------------------------------------------
 
-const char * fragmentSource = R"(
+const char * fragmentSource = R"glsl(
     #version 150 core
 
     out vec4 outColor;
@@ -27,7 +27,7 @@ const char * fragmentSource = R"(
     {
         outColor = vec4 (1.0, 1.0, 1.0, 1.0);
     }
-)";
+)glsl";
 
 //----------------------------------------------------------------------------
 
