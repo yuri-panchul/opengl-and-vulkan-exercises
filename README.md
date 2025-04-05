@@ -20,3 +20,7 @@ sudo apt-get install gcc-c++ libGLEW-devel libglfw3-devel
 ```bash
 sudo apt install libglfw3-dev libglew-dev
 ```
+
+## 2025.04.04
+
+Made an option to use GLEW and GLFW without installing them with sudo, just by copying their files into ~/opengl.
