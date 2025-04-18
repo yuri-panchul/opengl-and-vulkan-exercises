@@ -18,9 +18,15 @@ sudo apt-get install gcc-c++ libGLEW-devel libglfw3-devel
 * Installed GLEW and GLFW in Lubuntu by doing:
 
 ```bash
-sudo apt install libglfw3-dev libglew-dev
+sudo apt install libglew-dev libglfw3-dev
 ```
 
 ## 2025.04.04
 
 Made an option to use GLEW and GLFW without installing them with sudo, just by copying their files into ~/opengl.
+
+## 2025.04.18
+
+* Installed GLEW and GLFW in MacOS by doing:
+
+brew install glew glfw
