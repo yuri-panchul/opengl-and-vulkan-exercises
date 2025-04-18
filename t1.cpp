@@ -162,6 +162,18 @@ int main ()
             glfwSetWindowShouldClose (window, GL_TRUE);
     }
 
+    //------------------------------------------------------------------------
+
+    glDeleteProgram (shaderProgram);
+
+    glDeleteShader  (fragmentShader);
+    glDeleteShader  (vertexShader);
+
+    glDeleteBuffers      (1, & vertexBufferObject);
+    glDeleteVertexArrays (1, & vertexArrayObject);
+
+    //------------------------------------------------------------------------
+
     glfwTerminate ();
 
     //------------------------------------------------------------------------
