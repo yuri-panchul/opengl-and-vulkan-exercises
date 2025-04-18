@@ -157,7 +157,7 @@ int main ()
     while (! glfwWindowShouldClose (window))
     {
         glUniform3f (uniColor, clock () / 100 % 100 / 100.0f, 0.0f, 0.0f);
-        
+
         glDrawArrays
         (
             GL_TRIANGLES,

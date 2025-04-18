@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <ctime>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -155,6 +156,8 @@ int main ()
 
     while (! glfwWindowShouldClose (window))
     {
+        glUniform3f (uniColor, clock () / 100 % 100 / 100.0f, 0.0f, 0.0f);
+
         glDrawArrays
         (
             GL_TRIANGLES,
