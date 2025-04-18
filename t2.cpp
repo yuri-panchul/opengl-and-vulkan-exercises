@@ -153,15 +153,8 @@ int main ()
 
     //------------------------------------------------------------------------
 
-    auto t_start = std::chrono::high_resolution_clock::now ();
-
-    //------------------------------------------------------------------------
-
     while (! glfwWindowShouldClose (window))
     {
-        auto t_now = std::chrono::high_resolution_clock::now ();
-        float time = std::chrono::duration_cast <std::chrono::duration <float>> (t_now - t_start).count ();
-
         glDrawArrays
         (
             GL_TRIANGLES,
@@ -175,6 +168,18 @@ int main ()
         if (glfwGetKey (window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose (window, GL_TRUE);
     }
+
+    //------------------------------------------------------------------------
+
+    glDeleteProgram (shaderProgram);
+
+    glDeleteShader  (fragmentShader);
+    glDeleteShader  (vertexShader);
+
+    glDeleteBuffers      (1, & vertexBufferObject);
+    glDeleteVertexArrays (1, & vertexArrayObject);
+
+    //------------------------------------------------------------------------
 
     glfwTerminate ();
 
