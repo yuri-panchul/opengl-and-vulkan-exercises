@@ -1,4 +1,3 @@
-#include <chrono>
 #include <cstdio>
 
 #include <GL/glew.h>
@@ -10,9 +9,13 @@ const char * vertexSource = R"glsl(
     #version 150 core
 
     in vec2 position;
+    in vec3 color;
+
+    out vec3 Color;
 
     void main ()
     {
+        Color = color;
         gl_Position = vec4 (position, 0.0, 1.0);
     }
 )glsl";
@@ -22,13 +25,13 @@ const char * vertexSource = R"glsl(
 const char * fragmentSource = R"glsl(
     #version 150 core
 
-    uniform vec3 triangleColor;
+    in vec3 Color;
 
     out vec4 outColor;
 
     void main ()
     {
-        outColor = vec4 (triangleColor, 1.0);
+        outColor = vec4 (Color, 1.0);
     }
 )glsl";
 
@@ -73,9 +76,9 @@ int main ()
     glBindBuffer (GL_ARRAY_BUFFER, vertexBufferObject);
     
     float vertices [] = {
-          0.0f,   0.5f,  // Vertex 1 (X, Y)
-          0.5f, - 0.5f,  // Vertex 2 (X, Y)
-        - 0.5f, - 0.5f,  // Vertex 3 (X, Y)
+          0.0f,   0.5f, 1.0f, 0.0f, 0.0f,  // Vertex 1 (X, Y) Red
+          0.5f, - 0.5f, 0.0f, 1.0f, 0.0f,  // Vertex 2 (X, Y) Green
+        - 0.5f, - 0.5f, 0.0f, 0.0f, 1.0f,  // Vertex 3 (X, Y) Blue
     };
           
     glBufferData (GL_ARRAY_BUFFER,
@@ -133,6 +136,8 @@ int main ()
 
     GLint posAttrib = glGetAttribLocation (shaderProgram, "position");
 
+    glEnableVertexAttribArray (posAttrib);
+
     glVertexAttribPointer
     (
         posAttrib,
@@ -141,30 +146,32 @@ int main ()
         GL_FALSE,   // Whether the parameters should be normalized
                     // between 0.0 and 1.0
                     
-        0,          // Stride - number of bytes in between
-        0           // Offset from the beginning of the array
+        5 * sizeof (float),   // Stride - number of bytes in between
+        0                     // Offset from the beginning of the array
     );
     
-    glEnableVertexAttribArray (posAttrib);
-        
     //------------------------------------------------------------------------
 
-    auto t_start = std::chrono::high_resolution_clock::now ();
+    GLint colAttrib = glGetAttribLocation (shaderProgram, "color");
 
-    GLint uniColor = glGetUniformLocation (shaderProgram, "triangleColor");
-    glUniform3f (uniColor, 1.0f, 0.0f, 0.0f);
+    glEnableVertexAttribArray (colAttrib);
 
+    glVertexAttribPointer
+    (
+        colAttrib,
+        3,          // Number of the values
+        GL_FLOAT,
+        GL_FALSE,   // Whether the parameters should be normalized
+                    // between 0.0 and 1.0
+                    
+        5 * sizeof (float),            // Stride - number of bytes in between
+        (void *) (2 * sizeof (float))  // Offset from the beginning of the array
+    );
+    
     //------------------------------------------------------------------------
 
     while (! glfwWindowShouldClose (window))
     {
-        auto t_now = std::chrono::high_resolution_clock::now ();
-
-        float time = std::chrono::duration_cast <std::chrono::duration <float>>
-            (t_now - t_start).count ();
-
-        glUniform3f (uniColor, (sin (time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
-
         glDrawArrays
         (
             GL_TRIANGLES,
