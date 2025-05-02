@@ -76,10 +76,10 @@ int main ()
     glBindBuffer (GL_ARRAY_BUFFER, vertexBufferObject);
     
     float vertices [] = {
-        - 0.5f,   0.5f, 1.0f, 0.0f, 0.0f,  // Vertex 1 (X, Y) Red
-          0.5f,   0.5f, 0.0f, 1.0f, 0.0f,  // Vertex 2 (X, Y) Green
-          0.5f, - 0.5f, 0.0f, 0.0f, 1.0f,  // Vertex 3 (X, Y) Blue
-        - 0.5f, - 0.5f, 1.0f, 1.0f, 1.0f,  // Vertex 4 (X, Y) Green
+        - 0.5f,   0.5f, 1.0f, 0.0f, 0.0f,  // Vertex 0 (X, Y) Red
+          0.5f,   0.5f, 0.0f, 1.0f, 0.0f,  // Vertex 1 (X, Y) Green
+          0.5f, - 0.5f, 0.0f, 0.0f, 1.0f,  // Vertex 2 (X, Y) Blue
+        - 0.5f, - 0.5f, 1.0f, 1.0f, 1.0f,  // Vertex 3 (X, Y) White
     };
           
     glBufferData (GL_ARRAY_BUFFER,

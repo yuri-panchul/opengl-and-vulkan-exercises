@@ -76,10 +76,10 @@ int main ()
     glBindBuffer (GL_ARRAY_BUFFER, vertexBufferObject);
     
     float vertices [] = {
-        - 0.5f,   0.5f, 0.0f, 0.0f,  // Vertex 0 (X, Y) Red
-          0.5f,   0.5f, 1.0f, 0.0f,  // Vertex 1 (X, Y) Green
-          0.5f, - 0.5f, 0.0f, 1.0f,  // Vertex 2 (X, Y) Blue
-        - 0.5f, - 0.5f, 1.0f, 1.0f,  // Vertex 3 (X, Y) White
+        - 0.5f,   0.5f, 0.0f,  // Vertex 0 (X, Y) Black
+          0.5f,   0.5f, 1.0f,  // Vertex 1 (X, Y) Red
+          0.5f, - 0.5f, 0.0f,  // Vertex 2 (X, Y) Green
+        - 0.5f, - 0.5f, 1.0f,  // Vertex 3 (X, Y) Yellow
     };
           
     glBufferData (GL_ARRAY_BUFFER,
@@ -162,7 +162,7 @@ int main ()
         GL_FALSE,   // Whether the parameters should be normalized
                     // between 0.0 and 1.0
                     
-        4 * sizeof (float),   // Stride - number of bytes in between
+        3 * sizeof (float),   // Stride - number of bytes in between
         0                     // Offset from the beginning of the array
     );
 
@@ -175,12 +175,12 @@ int main ()
     glVertexAttribPointer
     (
         colAttrib,
-        2,          // Number of the values
+        1,          // Number of the values
         GL_FLOAT,
         GL_FALSE,   // Whether the parameters should be normalized
                     // between 0.0 and 1.0
 
-        4 * sizeof (float),            // Stride - number of bytes in between
+        3 * sizeof (float),            // Stride - number of bytes in between
         (void *) (2 * sizeof (float))  // Offset from the beginning of the array
     );
     
