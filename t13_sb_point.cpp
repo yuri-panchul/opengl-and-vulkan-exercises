@@ -105,10 +105,7 @@ int main ()
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "color");
 
-    glLinkProgram (shaderProgram);
-
-    // Shader sources are not needed anymore
-    // since the program is linked
+    glLinkProgram  (shaderProgram);
 
     glDeleteShader (fragmentShader);
     glDeleteShader (vertexShader);

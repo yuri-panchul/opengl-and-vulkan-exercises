@@ -127,13 +127,17 @@ int main ()
     GLuint shaderProgram = glCreateProgram ();
     glAttachShader (shaderProgram, vertexShader);
     glAttachShader (shaderProgram, fragmentShader);
-    
+
     // Optional for a single output
-    glBindFragDataLocation (shaderProgram, 0, "outColor");
-    
-    glLinkProgram (shaderProgram);
-    glUseProgram  (shaderProgram);
-    
+    glBindFragDataLocation (shaderProgram, 0, "fColor");
+
+    glLinkProgram  (shaderProgram);
+
+    glDeleteShader (fragmentShader);
+    glDeleteShader (vertexShader);
+
+    glUseProgram   (shaderProgram);
+
     //------------------------------------------------------------------------
 
     glVertexAttribPointer
@@ -169,9 +173,6 @@ int main ()
     //------------------------------------------------------------------------
 
     glDeleteProgram (shaderProgram);
-
-    glDeleteShader  (fragmentShader);
-    glDeleteShader  (vertexShader);
 
     //------------------------------------------------------------------------
 

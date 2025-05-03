@@ -127,8 +127,12 @@ int main ()
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "outColor");
     
-    glLinkProgram (shaderProgram);
-    glUseProgram  (shaderProgram);
+    glLinkProgram  (shaderProgram);
+
+    glDeleteShader (fragmentShader);
+    glDeleteShader (vertexShader);
+
+    glUseProgram   (shaderProgram);
     
     //------------------------------------------------------------------------
 
@@ -182,11 +186,7 @@ int main ()
 
     //------------------------------------------------------------------------
 
-    glDeleteProgram (shaderProgram);
-
-    glDeleteShader  (fragmentShader);
-    glDeleteShader  (vertexShader);
-
+    glDeleteProgram      (shaderProgram);
     glDeleteBuffers      (1, & vertexBufferObject);
     glDeleteVertexArrays (1, & vertexArrayObject);
 
