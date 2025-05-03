@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+for f in t??_*.cpp
+do
+    echo $f
+    ./r $f
+done
