@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -Eeuo pipefail
 
 file=t.cpp
 
@@ -27,9 +27,9 @@ then
         -ldl -lGL -lpthread -lX11
 
 elif [[ "$OSTYPE" = "darwin"* ]]; then
-    clang++ "$pwd/$file"  -std=c++11 -I/opt/homebrew/include -L/opt/homebrew/lib -framework OpenGL -lglew -lglfw
+    clang++ "$pwd/$file" -std=c++11 -I/opt/homebrew/include -L/opt/homebrew/lib -framework OpenGL -lglew -lglfw
 else
-    gcc "$pwd/$file" -lGL -lGLEW -lglfw
+    g++ "$pwd/$file" -lGL -lGLEW -lglfw
 fi
 
 ./a.out
