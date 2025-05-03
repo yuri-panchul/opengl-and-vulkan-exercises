@@ -30,3 +30,7 @@ Made an option to use GLEW and GLFW without installing them with sudo, just by c
 * Installed GLEW and GLFW in MacOS by doing:
 
 brew install glew glfw
+
+## 2025.05.05
+
+* Started adding examples based on [https://www.amazon.com/OpenGL-Superbible-Comprehensive-Tutorial-Reference/dp/0672337479](OpenGL Superbible: Comprehensive Tutorial and Reference 7th Edition by Graham Sellers, Richard Wright Jr. and Nicholas Haemel).
