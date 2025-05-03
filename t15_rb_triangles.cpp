@@ -160,7 +160,9 @@ int main ()
 
         glClearBufferfv (GL_COLOR, 0, black);
 
+        // Not sure if we need to bind it again
         glBindVertexArray (VAOs [Triangles]);
+
         glDrawArrays (GL_TRIANGLES, 0, NumVertices);
 
         glfwSwapBuffers (window);
