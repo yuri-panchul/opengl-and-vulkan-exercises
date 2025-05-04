@@ -8,6 +8,8 @@
 extern const char * vertexSource;
 extern const char * fragmentSource;
 
+GLuint shaderProgram;
+
 bool initUserOGL    ();
 void displayUserOGL ();
 void cleanupUserOGL ();
@@ -51,7 +53,8 @@ bool initShaders ()
     
     //------------------------------------------------------------------------
 
-    GLuint shaderProgram = glCreateProgram ();
+    shaderProgram = glCreateProgram ();
+
     glAttachShader (shaderProgram, vertexShader);
     glAttachShader (shaderProgram, fragmentShader);
     
@@ -61,11 +64,13 @@ bool initShaders ()
     glDeleteShader (vertexShader);
 
     glUseProgram   (shaderProgram);
+
+    return true;
 }
 
 //----------------------------------------------------------------------------
 
-bool cleanupShaders ()
+void cleanupShaders ()
 {
     glDeleteProgram (shaderProgram);
 }
@@ -104,7 +109,7 @@ int main ()
 
     //------------------------------------------------------------------------
 
-    if (! (initShaders () && initUserOGL ())
+    if (! (initShaders () && initUserOGL ()))
         return 1;
 
     //------------------------------------------------------------------------
@@ -123,6 +128,7 @@ int main ()
     //------------------------------------------------------------------------
 
     cleanupUserOGL ();
+    cleanupShaders ();
 
     //------------------------------------------------------------------------
 

@@ -34,15 +34,18 @@ const char * fragmentSource = R"glsl(
 
 //----------------------------------------------------------------------------
 
+GLuint vertexArrayObject;
+GLuint vertexBufferObject;
+
+//----------------------------------------------------------------------------
+
 bool initUserOGL ()
 {
-    GLuint vertexArrayObject;
     glGenVertexArrays (1, & vertexArrayObject);
     glBindVertexArray (vertexArrayObject);
     
     //------------------------------------------------------------------------
 
-    GLuint vertexBufferObject;
     glGenBuffers (1, & vertexBufferObject);
     glBindBuffer (GL_ARRAY_BUFFER, vertexBufferObject);
     
@@ -112,6 +115,8 @@ bool initUserOGL ()
 
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "outColor");
+
+    return true;
 }
 
 //----------------------------------------------------------------------------
