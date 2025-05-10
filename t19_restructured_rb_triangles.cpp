@@ -38,12 +38,13 @@ enum Buffer_IDs { ArrayBuffer , NumBuffers };
 GLuint VAOs    [ NumVAOs    ];
 GLuint Buffers [ NumBuffers ];
 
+const GLuint NumVertices = 6;
+
 //----------------------------------------------------------------------------
 
 bool initUserOGL ()
 {
     enum Attrib_IDs { vPosition = 0 };
-    const GLuint NumVertices = 6;
 
     //------------------------------------------------------------------------
 
