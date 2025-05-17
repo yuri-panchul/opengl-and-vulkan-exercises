@@ -59,8 +59,8 @@ void displayUserOGL ()
 {
     const GLfloat color [] =
     {
-        (float) sin (curTime) * 0.5f + 0.5f,
-        (float) cos (curTime) * 0.5f + 0.5f,
+        (float) sin (curTimeAlt) * 0.5f + 0.5f,
+        (float) cos (curTimeAlt) * 0.5f + 0.5f,
         0.0f,
         1.0f
     };
@@ -69,8 +69,8 @@ void displayUserOGL ()
 
     GLfloat attrib [] =
     {
-        (float) sin (curTime) * 0.5f,
-        (float) cos (curTime) * 0.6f,
+        (float) sin (curTimeAlt) * 0.5f,
+        (float) cos (curTimeAlt) * 0.6f,
         0.0f,
         0.0f
     };

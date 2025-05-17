@@ -94,7 +94,7 @@ void updateCurTime ()
         <std::chrono::duration <float>>
             (t_now - t_start).count ();
 
-    curTimeAlt = (float) clock () / CLOCKS_PER_SEC;
+    curTimeAlt = (float) clock () * 100 / CLOCKS_PER_SEC;
 }
 
 //----------------------------------------------------------------------------
