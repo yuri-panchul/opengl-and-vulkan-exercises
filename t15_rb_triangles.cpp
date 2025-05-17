@@ -38,7 +38,7 @@ const char * fragmentSource = R"glsl(
 int main ()
 {
     glfwInit ();
-    
+
     glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -91,17 +91,17 @@ int main ()
 
     GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
     glShaderSource (vertexShader, 1, & vertexSource, NULL);
-    
+
     // The last argument of glShaderSource is an array of index length,
     // not needed here.
-    
+
     glCompileShader (vertexShader);
-    
+
     GLint status;
     glGetShaderiv (vertexShader, GL_COMPILE_STATUS, & status);
-        
+
     char buffer [512];
-    
+
     // The third argument of glGetShaderInfoLog
     // is a pointer to string length, not needed here.
 
@@ -109,11 +109,11 @@ int main ()
 
     if (buffer [0] != '\0')
         printf ("glGetShaderInfoLog (vertexShader, ...): %s\n", buffer);
-    
+
     //------------------------------------------------------------------------
 
     GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-    
+
     glShaderSource     (fragmentShader, 1, & fragmentSource, NULL);
     glCompileShader    (fragmentShader);
     glGetShaderiv      (fragmentShader, GL_COMPILE_STATUS, & status);
@@ -121,7 +121,7 @@ int main ()
 
     if (buffer [0] != '\0')
         printf ("glGetShaderInfoLog (fragmentShader, ...): %s\n", buffer);
-    
+
     //------------------------------------------------------------------------
 
     GLuint shaderProgram = glCreateProgram ();
@@ -167,7 +167,7 @@ int main ()
 
         glfwSwapBuffers (window);
         glfwPollEvents  ();
-        
+
         if (glfwGetKey (window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose (window, GL_TRUE);
     }
@@ -184,4 +184,3 @@ int main ()
 
     return 0;
 }
-     

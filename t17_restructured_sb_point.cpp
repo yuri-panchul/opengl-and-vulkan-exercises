@@ -34,7 +34,7 @@ bool initUserOGL ()
 {
     glGenVertexArrays (1, & vertexArrayObject);
     glBindVertexArray (vertexArrayObject);
-    
+
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "color");
 

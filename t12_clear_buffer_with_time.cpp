@@ -54,12 +54,12 @@ int main ()
 
         // The second argument, GLint drawBuffer
         // is for the multiple buffer situation
-            
+
         glClearBufferfv (GL_COLOR, 0, red);
 
         glfwSwapBuffers (window);
         glfwPollEvents  ();
-        
+
         if (glfwGetKey (window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose (window, GL_TRUE);
     }
@@ -72,4 +72,3 @@ int main ()
 
     return 0;
 }
-     

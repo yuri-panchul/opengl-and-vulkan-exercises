@@ -43,22 +43,22 @@ bool initUserOGL ()
 {
     glGenVertexArrays (1, & vertexArrayObject);
     glBindVertexArray (vertexArrayObject);
-    
+
     //------------------------------------------------------------------------
 
     glGenBuffers (1, & vertexBufferObject);
     glBindBuffer (GL_ARRAY_BUFFER, vertexBufferObject);
-    
+
     float vertices [] = {
         - 0.5f,   0.5f, 1.0f, 0.0f, 0.0f,  // Vertex 0 (X, Y) Red
           0.5f,   0.5f, 0.0f, 1.0f, 0.0f,  // Vertex 1 (X, Y) Green
           0.5f, - 0.5f, 0.0f, 0.0f, 1.0f,  // Vertex 2 (X, Y) Blue
         - 0.5f, - 0.5f, 1.0f, 1.0f, 1.0f,  // Vertex 3 (X, Y) White
     };
-          
+
     glBufferData (GL_ARRAY_BUFFER,
         sizeof (vertices), vertices,
-        GL_STATIC_DRAW);    
+        GL_STATIC_DRAW);
 
     //------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ bool initUserOGL ()
         GL_FLOAT,
         GL_FALSE,   // Whether the parameters should be normalized
                     // between 0.0 and 1.0
-                    
+
         5 * sizeof (float),   // Stride - number of bytes in between
         0                     // Offset from the beginning of the array
     );

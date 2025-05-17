@@ -11,7 +11,7 @@ const char * vertexSource = R"glsl(
     // 'offset' and 'color' are input vertex attributes
     layout (location = 0) in vec4 offset;
     layout (location = 1) in vec4 color;
-    
+
     // 'vs_color' is an output the will be sent to the next shader stage
     out vec4 vs_color;
 
@@ -25,7 +25,7 @@ const char * vertexSource = R"glsl(
         );
 
         gl_Position = vertices [gl_VertexID] + offset;
-        
+
         // Output a fixed color for vs_color
         vs_color = color;
     }
@@ -58,7 +58,7 @@ bool initUserOGL ()
 {
     glGenVertexArrays (1, & vertexArrayObject);
     glBindVertexArray (vertexArrayObject);
-    
+
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "color");
 
