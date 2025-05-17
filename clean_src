@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail  # See the meaning in scripts/README.md
+# set -x  # Print each command
+
+sed -i 's/[[:space:]]\+$//' *.cpp
+sed -i 's/\t/    /g' *.cpp

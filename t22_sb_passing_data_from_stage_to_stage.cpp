@@ -8,7 +8,12 @@
 const char * vertexSource = R"glsl(
     #version 450 core
 
+    // 'offset' and 'color' are input vertex attributes
     layout (location = 0) in vec4 offset;
+    layout (location = 1) in vec4 color;
+    
+    // 'vs_color' is an output the will be sent to the next shader stage
+    out vec4 vs_color;
 
     void main ()
     {
@@ -20,19 +25,26 @@ const char * vertexSource = R"glsl(
         );
 
         gl_Position = vertices [gl_VertexID] + offset;
+        
+        // Output a fixed color for vs_color
+        vs_color = color;
     }
 )glsl";
 
 //----------------------------------------------------------------------------
 
 const char * fragmentSource = R"glsl(
-    #version 150 core
+    #version 450 core
 
+    // Input from the vertex shader
+    in vec4 vs_color;
+
+    // Output to the framebuffer
     out vec4 color;
 
     void main ()
     {
-        color = vec4 (0.0, 0.8, 1.0, 1.0);
+        color = vs_color;
     }
 )glsl";
 
@@ -57,7 +69,7 @@ bool initUserOGL ()
 
 void displayUserOGL ()
 {
-    const GLfloat color [] =
+    const GLfloat color1 [] =
     {
         (float) sin (curTime) * 0.5f + 0.5f,
         (float) cos (curTime) * 0.5f + 0.5f,
@@ -65,7 +77,7 @@ void displayUserOGL ()
         1.0f
     };
 
-    glClearBufferfv (GL_COLOR, 0, color);
+    glClearBufferfv (GL_COLOR, 0, color1);
 
     GLfloat attrib [] =
     {
@@ -75,7 +87,16 @@ void displayUserOGL ()
         0.0f
     };
 
+    GLfloat color2 [] =
+    {
+        0.0f,
+        (float) sin (curTime) * 0.5f + 0.5f,
+        (float) cos (curTime) * 0.5f + 0.5f,
+        1.0f
+    };
+
     glVertexAttrib4fv (0, attrib);  // First arg is an attribute id
+    glVertexAttrib4fv (1, color2);
 
     glDrawArrays
     (
