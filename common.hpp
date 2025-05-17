@@ -1,4 +1,7 @@
+#include <chrono>
+#include <cmath>
 #include <cstdio>
+#include <ctime>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -77,6 +80,25 @@ void cleanupShaders ()
 
 //----------------------------------------------------------------------------
 
+std::chrono::high_resolution_clock::time_point t_start
+    = std::chrono::high_resolution_clock::now();
+
+float curTime    = 0.0;
+float curTimeAlt = 0.0;
+
+void updateCurTime ()
+{
+    auto t_now = std::chrono::high_resolution_clock::now ();
+
+    curTime = std::chrono::duration_cast
+        <std::chrono::duration <float>>
+            (t_now - t_start).count ();
+
+    curTimeAlt = (float) clock () / CLOCKS_PER_SEC;
+}
+
+//----------------------------------------------------------------------------
+
 int main ()
 {
     glfwInit ();
@@ -116,7 +138,8 @@ int main ()
 
     while (! glfwWindowShouldClose (window))
     {
-        displayUserOGL ();
+        updateCurTime   ();
+        displayUserOGL  ();
 
         glfwSwapBuffers (window);
         glfwPollEvents  ();
@@ -136,4 +159,3 @@ int main ()
 
     return 0;
 }
-     
