@@ -1,44 +1,66 @@
 // See OpenGL Superbible 7th Edition
-// Chapter 3, the subchapter Interface Blocks
+// Chapter 3, the subchapter Tesselation
 
 #include "common.hpp"
 
 //----------------------------------------------------------------------------
 
-const char * computeSource        = NULL;
-const char * tessControlSource    = NULL;
-const char * tessEvaluationSource = NULL;
-const char * geometrySource       = NULL;
+const char * computeSource  = NULL;
+const char * geometrySource = NULL;
 
 //----------------------------------------------------------------------------
 
 const char * vertexSource = R"glsl(
     #version 450 core
 
-    // 'offset' and 'color' are input vertex attributes
-    layout (location = 0) in vec4 offset;
-    layout (location = 1) in vec4 color;
-
-    // Interface block
-
-    out VS_OUT
-    {
-        vec4 color;
-    }
-    vs_out;
-
     void main ()
     {
-        const vec4 vertices [3] = vec4 [3]
+        const vec4 vertices [] = vec4 []
         (
             vec4 (  0.25,  -0.25, 0.5, 1.0),
             vec4 ( -0.25,  -0.25, 0.5, 1.0),
             vec4 (  0.25,   0.25, 0.5, 1.0)
         );
 
-        gl_Position = vertices [gl_VertexID] + offset;
+        gl_Position = vertices [gl_VertexID];
+    }
+)glsl";
 
-        vs_out.color = color;
+//----------------------------------------------------------------------------
+
+const char * tessControlSource = R"glsl(
+    #version 450 core
+
+    layout (vertices = 3) out;
+
+    void main ()
+    {
+        if (gl_InvocationID == 0)
+        {
+            gl_TessLevelInner [0] = 3.0;
+
+            gl_TessLevelOuter [0] = 2.0;
+            gl_TessLevelOuter [1] = 3.0;
+            gl_TessLevelOuter [2] = 4.0;
+        }
+
+          gl_out [gl_InvocationID].gl_Position
+        = gl_in  [gl_InvocationID].gl_Position;
+    }
+)glsl";
+
+//----------------------------------------------------------------------------
+
+const char * tessEvaluationSource = R"glsl(
+    #version 450 core
+
+    layout (triangles, equal_spacing, cw) in;
+
+    void main ()
+    {
+        gl_Position =   gl_TessCoord.x * gl_in [0].gl_Position
+                      + gl_TessCoord.y * gl_in [1].gl_Position
+                      + gl_TessCoord.z * gl_in [2].gl_Position;
     }
 )glsl";
 
@@ -47,20 +69,11 @@ const char * vertexSource = R"glsl(
 const char * fragmentSource = R"glsl(
     #version 450 core
 
-    // Input from the vertex shader
-
-    in VS_OUT
-    {
-        vec4 color;
-    }
-    fs_in;
-
-    // Output to the framebuffer
     out vec4 color;
 
     void main ()
     {
-        color = fs_in.color;
+        color = vec4(0.0, 0.8, 1.0, 1.0);
     }
 )glsl";
 
@@ -78,6 +91,8 @@ bool initUserOGL ()
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "color");
 
+    glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+
     return true;
 }
 
@@ -85,41 +100,10 @@ bool initUserOGL ()
 
 void displayUserOGL ()
 {
-    const GLfloat color1 [] =
-    {
-        (float) sin (curTime) * 0.5f + 0.5f,
-        (float) cos (curTime) * 0.5f + 0.5f,
-        0.0f,
-        1.0f
-    };
+    static const GLfloat green [] = { 0.0f, 0.25f, 0.0f, 1.0f };
+    glClearBufferfv (GL_COLOR, 0, green);
 
-    glClearBufferfv (GL_COLOR, 0, color1);
-
-    GLfloat attrib [] =
-    {
-        (float) sin (curTime) * 0.5f,
-        (float) cos (curTime) * 0.6f,
-        0.0f,
-        0.0f
-    };
-
-    GLfloat color2 [] =
-    {
-        0.0f,
-        (float) sin (curTime) * 0.5f + 0.5f,
-        (float) cos (curTime) * 0.5f + 0.5f,
-        1.0f
-    };
-
-    glVertexAttrib4fv (0, attrib);  // First arg is an attribute id
-    glVertexAttrib4fv (1, color2);
-
-    glDrawArrays
-    (
-        GL_TRIANGLES,
-        0,  // How many vertices to skip
-        3   // Number of vertices
-    );
+    glDrawArrays (GL_PATCHES, 0, 3);
 }
 
 //----------------------------------------------------------------------------
