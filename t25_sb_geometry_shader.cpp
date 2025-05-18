@@ -8,7 +8,6 @@
 const char * computeSource        = NULL;
 const char * tessControlSource    = NULL;
 const char * tessEvaluationSource = NULL;
-const char * geometrySource       = NULL;
 
 //----------------------------------------------------------------------------
 
@@ -25,6 +24,26 @@ const char * vertexSource = R"glsl(
         );
 
         gl_Position = vertices [gl_VertexID];
+    }
+)glsl";
+
+//----------------------------------------------------------------------------
+
+const char * geometrySource = R"glsl(
+    #version 450 core
+    
+    layout (triangles) in;
+    layout (points, max_vertices = 3) out;
+
+    void main ()
+    {
+        int i;
+
+        for (i = 0; i < gl_in.length (); i++)
+        {
+            gl_Position = gl_in [i].gl_Position;
+            EmitVertex ();
+        }
     }
 )glsl";
 
@@ -55,6 +74,7 @@ bool initUserOGL ()
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "color");
 
+    glPointSize (20.0f);
     return true;
 }
 
