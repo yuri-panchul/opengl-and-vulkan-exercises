@@ -1,3 +1,4 @@
+#include <cassert>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -8,7 +9,11 @@
 
 //----------------------------------------------------------------------------
 
+extern const char * computeSource;
 extern const char * vertexSource;
+extern const char * tessControlSource;
+extern const char * tessEvaluationSource;
+extern const char * geometrySource;
 extern const char * fragmentSource;
 
 GLuint shaderProgram;
@@ -19,63 +24,88 @@ void cleanupUserOGL ();
 
 //----------------------------------------------------------------------------
 
-bool initShaders ()
+GLuint shadersToDelete [6];
+int    nShadersToDelete = 0;
+
+bool addShader (GLenum shaderType, const char * shaderSource)
 {
-    GLuint vertexShader = glCreateShader (GL_VERTEX_SHADER);
-    glShaderSource (vertexShader, 1, & vertexSource, NULL);
-    
+    if (shaderSource == NULL)
+        return true;
+
+    GLuint shader = glCreateShader (shaderType);
+
+    assert (  nShadersToDelete
+            < sizeof (shadersToDelete) / sizeof (* shadersToDelete));
+
+    shadersToDelete [nShadersToDelete ++] = shader;
+
+    glShaderSource (shader, 1, & shaderSource, NULL);
+
     // The last argument of glShaderSource is an array of index length,
     // not needed here.
-    
-    glCompileShader (vertexShader);
-    
+
+    glCompileShader (shader);
+
     GLint status;
-    glGetShaderiv (vertexShader, GL_COMPILE_STATUS, & status);
-        
+    glGetShaderiv (shader, GL_COMPILE_STATUS, & status);
+
     char buffer [512];
-    
+
     // The third argument of glGetShaderInfoLog
     // is a pointer to string length, not needed here.
 
-    glGetShaderInfoLog (vertexShader, sizeof (buffer), NULL, buffer);
+    glGetShaderInfoLog (shader, sizeof (buffer), NULL, buffer);
 
     if (buffer [0] != '\0')
+    {
         printf ("glGetShaderInfoLog (vertexShader, ...): %s\n", buffer);
-    
-    //------------------------------------------------------------------------
+        return false;
+    }
 
-    GLuint fragmentShader = glCreateShader (GL_FRAGMENT_SHADER);
-    
-    glShaderSource     (fragmentShader, 1, & fragmentSource, NULL);
-    glCompileShader    (fragmentShader);
-    glGetShaderiv      (fragmentShader, GL_COMPILE_STATUS, & status);
-    glGetShaderInfoLog (fragmentShader, sizeof (buffer), NULL, buffer);
-
-    if (buffer [0] != '\0')
-        printf ("glGetShaderInfoLog (fragmentShader, ...): %s\n", buffer);
-    
-    //------------------------------------------------------------------------
-
-    shaderProgram = glCreateProgram ();
-
-    glAttachShader (shaderProgram, vertexShader);
-    glAttachShader (shaderProgram, fragmentShader);
-    
-    glLinkProgram  (shaderProgram);
-
-    glDeleteShader (fragmentShader);
-    glDeleteShader (vertexShader);
-
-    glUseProgram   (shaderProgram);
-
+    glAttachShader (shaderProgram, shader);
     return true;
+}
+
+//----------------------------------------------------------------------------
+
+void deleteAllAddedShaders ()
+{
+    for (int i = 0; i < nShadersToDelete; i ++)
+        glDeleteShader (shadersToDelete [i]);
+
+    nShadersToDelete = 0;
 }
 
 //----------------------------------------------------------------------------
 
 void cleanupShaders ()
 {
+    deleteAllAddedShaders ();
     glDeleteProgram (shaderProgram);
+}
+
+//----------------------------------------------------------------------------
+
+bool initShaders ()
+{
+    shaderProgram = glCreateProgram ();
+
+    if (! (   addShader (GL_COMPUTE_SHADER         , computeSource        )
+           && addShader (GL_VERTEX_SHADER          , vertexSource         )
+           && addShader (GL_TESS_CONTROL_SHADER    , tessControlSource    )
+           && addShader (GL_TESS_EVALUATION_SHADER , tessEvaluationSource )
+           && addShader (GL_GEOMETRY_SHADER        , geometrySource       )
+           && addShader (GL_FRAGMENT_SHADER        , fragmentSource       )))
+    {
+        cleanupShaders ();
+        return false;
+    }
+
+    glLinkProgram (shaderProgram);
+    deleteAllAddedShaders ();
+    glUseProgram  (shaderProgram);
+
+    return true;
 }
 
 //----------------------------------------------------------------------------
@@ -102,7 +132,7 @@ void updateCurTime ()
 int main ()
 {
     glfwInit ();
-    
+
     //------------------------------------------------------------------------
 
     glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -143,7 +173,7 @@ int main ()
 
         glfwSwapBuffers (window);
         glfwPollEvents  ();
-        
+
         if (glfwGetKey (window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose (window, GL_TRUE);
     }

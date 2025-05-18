@@ -6,6 +6,13 @@
 
 //----------------------------------------------------------------------------
 
+const char * computeSource        = NULL;
+const char * tessControlSource    = NULL;
+const char * tessEvaluationSource = NULL;
+const char * geometrySource       = NULL;
+
+//----------------------------------------------------------------------------
+
 const char * vertexSource = R"glsl(
     #version 400 core
 
