@@ -52,8 +52,6 @@ bool initUserOGL ()
     // Optional for a single output
     glBindFragDataLocation (shaderProgram, 0, "color");
 
-    glPointSize (100.0f);
-
     return true;
 }
 
