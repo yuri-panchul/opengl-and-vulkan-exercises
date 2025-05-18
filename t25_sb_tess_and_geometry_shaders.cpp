@@ -6,7 +6,6 @@
 //----------------------------------------------------------------------------
 
 const char * computeSource  = NULL;
-const char * geometrySource = NULL;
 
 //----------------------------------------------------------------------------
 
@@ -39,9 +38,9 @@ const char * tessControlSource = R"glsl(
         {
             gl_TessLevelInner [0] = 3.0;
 
-            gl_TessLevelOuter [0] = 2.0;
-            gl_TessLevelOuter [1] = 3.0;
-            gl_TessLevelOuter [2] = 4.0;
+            gl_TessLevelOuter [0] = 5.0;
+            gl_TessLevelOuter [1] = 5.0;
+            gl_TessLevelOuter [2] = 5.0;
         }
 
           gl_out [gl_InvocationID].gl_Position
@@ -61,6 +60,26 @@ const char * tessEvaluationSource = R"glsl(
         gl_Position =   gl_TessCoord.x * gl_in [0].gl_Position
                       + gl_TessCoord.y * gl_in [1].gl_Position
                       + gl_TessCoord.z * gl_in [2].gl_Position;
+    }
+)glsl";
+
+//----------------------------------------------------------------------------
+
+const char * geometrySource = R"glsl(
+    #version 450 core
+
+    layout (triangles) in;
+    layout (points, max_vertices = 3) out;
+
+    void main ()
+    {
+        int i;
+
+        for (i = 0; i < gl_in.length (); i++)
+        {
+            gl_Position = gl_in [i].gl_Position;
+            EmitVertex ();
+        }
     }
 )glsl";
 
@@ -92,6 +111,7 @@ bool initUserOGL ()
     glBindFragDataLocation (shaderProgram, 0, "color");
 
     glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
+    glPointSize (10.0f);
 
     return true;
 }

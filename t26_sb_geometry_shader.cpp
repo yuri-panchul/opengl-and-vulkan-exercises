@@ -31,7 +31,7 @@ const char * vertexSource = R"glsl(
 
 const char * geometrySource = R"glsl(
     #version 450 core
-    
+
     layout (triangles) in;
     layout (points, max_vertices = 3) out;
 
